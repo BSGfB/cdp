@@ -10,5 +10,6 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: junitVersion
+    testCompile group: 'junit',         name: 'junit',      version: junitVersion
+    testCompile group: 'org.easymock',  name: 'easymock',   version: easymockVersion
 }

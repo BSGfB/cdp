@@ -1,6 +1,7 @@
 package com.bsgfb.cdp.todo.dao;
 
 import com.bsgfb.cdp.todo.model.Todo;
+import com.bsgfb.cdp.todo.model.TodoStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,5 +54,10 @@ public class InMemoryTodoListDao implements TodoListDao {
     @Override
     public void removeAll() {
         tasks.clear();
+    }
+
+    @Override
+    public void updateTodoStatusById(final Long id, final TodoStatus todoStatus) {
+        tasks.get(id).setStatus(todoStatus);
     }
 }
