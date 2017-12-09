@@ -2,15 +2,20 @@ package com.bsgfb.cdp.todo.client;
 
 import com.bsgfb.cdp.todo.model.Todo;
 import com.bsgfb.cdp.todo.service.TodoListService;
+import com.bsgfb.cdp.todo.util.ConsoleInput;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ConsoleClient {
     private TodoListService todoListService;
-    private Scanner scanner = new Scanner(System.in);
+    private ConsoleInput consoleInput;
 
-    public ConsoleClient(final TodoListService todoListService) {
+    public ConsoleClient(final TodoListService todoListService, ConsoleInput consoleInput) {
         this.todoListService = todoListService;
+        this.consoleInput = consoleInput;
     }
 
     private Map<Long, Long> showTodoList() {
@@ -42,12 +47,11 @@ public class ConsoleClient {
         showSplitter();
 
         System.out.print("Witch one: ");
-        long i = scannerNextNumber();
+        long i = consoleInput.readNumber();
 
         if (isValidNumberInput(i, ids.size())) {
             System.out.println("You selected:" + todoListService.findById(ids.get(i)));
-        }
-        else {
+        } else {
             System.out.println("Wrong input");
         }
     }
@@ -55,22 +59,23 @@ public class ConsoleClient {
     private void addTodoController() {
         System.out.println("Create new todo item");
         System.out.print("Task is: ");
-        String task = scanner.nextLine();
-
+        String task = consoleInput.readString();
+        System.out.println("Task: " + task);
         if (isValidTextInput(task)) {
             todoListService.save(new Todo(task));
+        } else {
+            System.out.println("KEK");
         }
     }
 
     private void removeAllController() {
         System.out.println("Are you sure?(yes/no)");
-        String answer = scanner.nextLine();
+        String answer = consoleInput.readString();
 
         if (isValidTextInput(answer) && answer.equalsIgnoreCase("yes")) {
             todoListService.removeAll();
             System.out.println("All records were deleted!");
-        }
-        else {
+        } else {
             System.out.println("You said no!");
         }
     }
@@ -80,12 +85,11 @@ public class ConsoleClient {
         showSplitter();
 
         System.out.print("Witch one: ");
-        long i = scannerNextNumber();
+        long i = consoleInput.readNumber();
 
         if (isValidNumberInput(i, ids.size())) {
             todoListService.remove(ids.get(i));
-        }
-        else {
+        } else {
             System.out.println("Wrong input");
         }
     }
@@ -93,7 +97,7 @@ public class ConsoleClient {
     private void showAll() {
         showTodoList();
         System.out.print("[Press enter]");
-        scanner.nextLine();
+        consoleInput.readString();
     }
 
     private void controller(MenuPoint menuPoint) {
@@ -121,7 +125,7 @@ public class ConsoleClient {
                 showAll();
                 break;
             case UNDEFINED:
-                System.out.println("Hahhahahaha");
+                System.out.println("Wrong input");
                 break;
         }
     }
@@ -132,25 +136,10 @@ public class ConsoleClient {
         do {
             showControlMenu();
 
-            menuPoint = MenuPoint.getInstance(scannerNextNumber());
+            menuPoint = MenuPoint.getInstance(consoleInput.readNumber());
             controller(menuPoint);
 
         } while (menuPoint != MenuPoint.EXIT);
-    }
-
-    private int scannerNextNumber() {
-        int i;
-        try {
-            i = scanner.nextInt();
-        }
-        catch (InputMismatchException e) {
-            i = Integer.MIN_VALUE;
-        }
-        finally {
-            scanner.nextLine();
-        }
-
-        return i;
     }
 
     private boolean isValidTextInput(String text) {
@@ -182,15 +171,24 @@ public class ConsoleClient {
 
         public static MenuPoint getInstance(Integer number) {
             switch (number) {
-                case 0: return MenuPoint.EXIT;
-                case 1: return MenuPoint.ADD_TODO;
-                case 2: return MenuPoint.REMOVE_TODO;
-                case 3: return MenuPoint.REMOVE_ALL;
-                case 4: return MenuPoint.GET_ONE;
-                case 5: return MenuPoint.SAVE_TO_FILE;
-                case 6: return MenuPoint.LOAD_FROM_FILE;
-                case 7: return MenuPoint.SHOW_ALL;
-                default: return MenuPoint.UNDEFINED;
+                case 0:
+                    return MenuPoint.EXIT;
+                case 1:
+                    return MenuPoint.ADD_TODO;
+                case 2:
+                    return MenuPoint.REMOVE_TODO;
+                case 3:
+                    return MenuPoint.REMOVE_ALL;
+                case 4:
+                    return MenuPoint.GET_ONE;
+                case 5:
+                    return MenuPoint.SAVE_TO_FILE;
+                case 6:
+                    return MenuPoint.LOAD_FROM_FILE;
+                case 7:
+                    return MenuPoint.SHOW_ALL;
+                default:
+                    return MenuPoint.UNDEFINED;
             }
         }
 
