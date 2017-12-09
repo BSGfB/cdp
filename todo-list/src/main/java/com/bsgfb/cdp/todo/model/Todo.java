@@ -63,6 +63,6 @@ public class Todo {
 
     @Override
     public String toString() {
-        return String.format("[%-15s] - %s", status, task);
+        return String.format("[%s] - %s", status, task);
     }
 }

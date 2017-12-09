@@ -1,13 +1,12 @@
 package com.bsgfb.cdp.todo.client;
 
 import com.bsgfb.cdp.todo.model.Todo;
+import com.bsgfb.cdp.todo.model.TodoStatus;
 import com.bsgfb.cdp.todo.service.TodoListService;
 import com.bsgfb.cdp.todo.util.ConsoleInput;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ConsoleClient {
     private TodoListService todoListService;
@@ -20,7 +19,7 @@ public class ConsoleClient {
 
     private Map<Long, Long> showTodoList() {
         System.out.println("Todo list:");
-        List<Todo> all = todoListService.findAll();
+        List<Todo> all = todoListService.findAll().stream().sorted(Comparator.comparing(Todo::getStatus)).collect(Collectors.toList());
 
         Map<Long, Long> menuNumberTodoIdMap = new HashMap<>();
         for (int i = 0; i < all.size(); i++) {
@@ -50,10 +49,18 @@ public class ConsoleClient {
         long i = consoleInput.readNumber();
 
         if (isValidNumberInput(i, ids.size())) {
-            System.out.println("You selected:" + todoListService.findById(ids.get(i)));
+            Todo byId = todoListService.findById(ids.get(i));
+            System.out.println("You selected:" + byId);
+            changeStatusController(byId);
         } else {
             System.out.println("Wrong input");
         }
+    }
+
+    private void changeStatusController(Todo todo) {
+        System.out.println("Do you want change todo status?(yes/no)");
+        if(consoleInput.readString().equalsIgnoreCase("yes"))
+            todoListService.updateTodoStatusById(todo.getId(), todo.getStatus() == TodoStatus.IN_PROGRESS ? TodoStatus.DONE: TodoStatus.IN_PROGRESS);
     }
 
     private void addTodoController() {
