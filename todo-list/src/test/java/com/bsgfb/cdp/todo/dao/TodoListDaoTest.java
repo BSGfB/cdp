@@ -2,6 +2,7 @@ package com.bsgfb.cdp.todo.dao;
 
 import com.bsgfb.cdp.todo.model.Todo;
 import com.bsgfb.cdp.todo.model.TodoStatus;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -72,9 +73,15 @@ public class TodoListDaoTest {
     }
 
     @Test
-    public void test() {
-        asList(new Todo("test_1", TodoStatus.IN_PROGRESS), new Todo("test_2", TodoStatus.IN_PROGRESS))
-        .forEach(System.out::println);
+    public void updateTodoStatusById() {
+        Long id = todoListDao.save(new Todo("test", TodoStatus.IN_PROGRESS));
+        todoListDao.updateTodoStatusById(id, TodoStatus.DONE);
 
+        Assert.assertEquals(TodoStatus.DONE, todoListDao.findById(id).getStatus());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void updateTodoStatusByNotExistedId() {
+        todoListDao.updateTodoStatusById(-1L, TodoStatus.DONE);
     }
 }
