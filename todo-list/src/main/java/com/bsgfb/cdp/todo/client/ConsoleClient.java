@@ -4,7 +4,12 @@ import com.bsgfb.cdp.todo.model.Todo;
 import com.bsgfb.cdp.todo.model.TodoStatus;
 import com.bsgfb.cdp.todo.service.TodoListService;
 import com.bsgfb.cdp.todo.util.ConsoleInput;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -12,9 +17,13 @@ public class ConsoleClient {
     private TodoListService todoListService;
     private ConsoleInput consoleInput;
 
+    private ObjectMapper objectMapper = new ObjectMapper();
+
     public ConsoleClient(final TodoListService todoListService, ConsoleInput consoleInput) {
         this.todoListService = todoListService;
         this.consoleInput = consoleInput;
+
+        objectMapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
     }
 
     private Map<Long, Long> showTodoList() {
@@ -87,6 +96,30 @@ public class ConsoleClient {
         }
     }
 
+    private void loadFromFileController() {
+        System.out.println("Loading data from file");
+        System.out.print("File address: ");
+        String filePath = consoleInput.readString();
+        try {
+            Arrays.asList(objectMapper
+                    .readValue(new FileInputStream(filePath), Todo[].class))
+                    .forEach(todoListService::save);
+        } catch (IOException e) {
+            System.out.println("Cannot load from file: [" + e.getMessage() + "]");
+        }
+    }
+
+    private void saveToFileController() {
+        System.out.println("Saving data to file");
+        System.out.print("File address: ");
+        String filePath = consoleInput.readString();
+        try {
+            objectMapper.writeValue(new FileOutputStream(filePath), todoListService.findAll());
+        } catch (IOException e) {
+            System.out.println("Cannot write to file. Error: [" + e.getMessage() + "]");
+        }
+    }
+
     private void removeOneTodo() {
         Map<Long, Long> ids = showTodoList();
         showSplitter();
@@ -125,8 +158,10 @@ public class ConsoleClient {
                 removeOneTodo();
                 break;
             case LOAD_FROM_FILE:
+                loadFromFileController();
                 break;
             case SAVE_TO_FILE:
+                saveToFileController();
                 break;
             case SHOW_ALL:
                 showAll();

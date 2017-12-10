@@ -2,8 +2,11 @@ group 'com.bsgfb'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
+apply plugin: 'application'
 
 sourceCompatibility = 1.8
+
+mainClassName = mainClass
 
 repositories {
     mavenCentral()
@@ -12,6 +15,25 @@ repositories {
 dependencies {
     testCompile group: 'junit',         name: 'junit',      version: junitVersion
     testCompile group: 'org.easymock',  name: 'easymock',   version: easymockVersion
+
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: jacksonDatabindVersion
+}
+
+task fatJar(type: Jar) {
+    from files(sourceSets.main.output.classesDir)
+    from { configurations.compile.collect { zipTree(it) } } {
+        exclude "META-INF/*.SF"
+        exclude "META-INF/*.DSA"
+        exclude "META-INF/*.RSA"
+    }
+    with jar
+    manifest {
+        attributes 'Main-Class': mainClass
+    }
+}
+
+jar {
+
 }
 
 task(type: JavaExec, dependsOn: ['build'], 'runApp') {

@@ -1,5 +1,8 @@
 package com.bsgfb.cdp.todo.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Todo {
     private Long id;
     private String task;
@@ -14,7 +17,8 @@ public class Todo {
         this.status = status;
     }
 
-    public Todo(final Long id, final String task, final TodoStatus status) {
+    @JsonCreator
+    public Todo(@JsonProperty("id") final Long id, @JsonProperty("task") final String task, @JsonProperty("status") final TodoStatus status) {
         this.id = id;
         this.task = task;
         this.status = status;
