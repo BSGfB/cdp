@@ -10,6 +10,10 @@ public enum TodoStatus {
 
     @JsonCreator
     public static TodoStatus createValue(final String value) {
-        return Arrays.stream(TodoStatus.values()).filter(todoStatus -> value.equalsIgnoreCase(todoStatus.toString())).findFirst().orElse(IN_PROGRESS);
+        return Arrays
+                .stream(TodoStatus.values())
+                .filter(todoStatus -> value.equalsIgnoreCase(todoStatus.toString()))
+                .findFirst()
+                .orElse(IN_PROGRESS);
     }
 }

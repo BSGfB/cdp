@@ -18,7 +18,9 @@ public class Todo {
     }
 
     @JsonCreator
-    public Todo(@JsonProperty("id") final Long id, @JsonProperty("task") final String task, @JsonProperty("status") final TodoStatus status) {
+    public Todo(@JsonProperty("id") final Long id,
+                @JsonProperty("task") final String task,
+                @JsonProperty("status") final TodoStatus status) {
         this.id = id;
         this.task = task;
         this.status = status;

@@ -1,6 +1,6 @@
 package com.bsgfb.cdp.todo.util;
 
-public interface ConsoleInput {
+public interface UserInput {
     int readNumber();
 
     String readString();

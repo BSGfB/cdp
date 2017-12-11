@@ -3,7 +3,7 @@ package com.bsgfb.cdp.todo.client;
 import com.bsgfb.cdp.todo.model.Todo;
 import com.bsgfb.cdp.todo.model.TodoStatus;
 import com.bsgfb.cdp.todo.service.TodoListService;
-import com.bsgfb.cdp.todo.util.ConsoleInput;
+import com.bsgfb.cdp.todo.util.UserInput;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
@@ -19,13 +19,13 @@ public class ConsoleClient {
     private static final Logger LOGGER = LogManager.getLogger(ConsoleClient.class);
 
     private TodoListService todoListService;
-    private ConsoleInput consoleInput;
+    private UserInput userInput;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    public ConsoleClient(final TodoListService todoListService, ConsoleInput consoleInput) {
+    public ConsoleClient(final TodoListService todoListService, UserInput userInput) {
         this.todoListService = todoListService;
-        this.consoleInput = consoleInput;
+        this.userInput = userInput;
 
         objectMapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
     }
@@ -59,7 +59,7 @@ public class ConsoleClient {
         showSplitter();
 
         LOGGER.debug("Witch one: ");
-        long i = consoleInput.readNumber();
+        long i = userInput.readNumber();
 
         if (isValidNumberInput(i, ids.size())) {
             Todo byId = todoListService.findById(ids.get(i));
@@ -72,14 +72,14 @@ public class ConsoleClient {
 
     private void changeStatusController(Todo todo) {
         LOGGER.debug("Do you want change todo status?(yes/no)");
-        if(consoleInput.readString().equalsIgnoreCase("yes"))
+        if(userInput.readString().equalsIgnoreCase("yes"))
             todoListService.updateTodoStatusById(todo.getId(), todo.getStatus() == TodoStatus.IN_PROGRESS ? TodoStatus.DONE: TodoStatus.IN_PROGRESS);
     }
 
     private void addTodoController() {
         LOGGER.debug("Create new todo item");
         LOGGER.debug("Task is: ");
-        String task = consoleInput.readString();
+        String task = userInput.readString();
         LOGGER.debug("Task: " + task);
         if (isValidTextInput(task)) {
             todoListService.save(new Todo(task));
@@ -90,7 +90,7 @@ public class ConsoleClient {
 
     private void removeAllController() {
         LOGGER.debug("Are you sure?(yes/no)");
-        String answer = consoleInput.readString();
+        String answer = userInput.readString();
 
         if (isValidTextInput(answer) && answer.equalsIgnoreCase("yes")) {
             todoListService.removeAll();
@@ -103,7 +103,7 @@ public class ConsoleClient {
     private void loadFromFileController() {
         LOGGER.debug("Loading data from file");
         LOGGER.debug("File address: ");
-        String filePath = consoleInput.readString();
+        String filePath = userInput.readString();
         try {
             Arrays.asList(objectMapper
                     .readValue(new FileInputStream(filePath), Todo[].class))
@@ -116,7 +116,7 @@ public class ConsoleClient {
     private void saveToFileController() {
         LOGGER.debug("Saving data to file");
         LOGGER.debug("File address: ");
-        String filePath = consoleInput.readString();
+        String filePath = userInput.readString();
         try {
             objectMapper.writeValue(new FileOutputStream(filePath), todoListService.findAll());
         } catch (IOException e) {
@@ -129,7 +129,7 @@ public class ConsoleClient {
         showSplitter();
 
         LOGGER.debug("Witch one: ");
-        long i = consoleInput.readNumber();
+        long i = userInput.readNumber();
 
         if (isValidNumberInput(i, ids.size())) {
             todoListService.remove(ids.get(i));
@@ -141,7 +141,7 @@ public class ConsoleClient {
     private void showAll() {
         showTodoList();
         LOGGER.debug("[Press enter]");
-        consoleInput.readString();
+        userInput.readString();
     }
 
     private void controller(MenuPoint menuPoint) {
@@ -182,7 +182,7 @@ public class ConsoleClient {
         do {
             showControlMenu();
 
-            menuPoint = MenuPoint.getInstance(consoleInput.readNumber());
+            menuPoint = MenuPoint.getInstance(userInput.readNumber());
             controller(menuPoint);
 
         } while (menuPoint != MenuPoint.EXIT);

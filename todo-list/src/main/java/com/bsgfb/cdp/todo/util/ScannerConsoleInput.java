@@ -3,7 +3,7 @@ package com.bsgfb.cdp.todo.util;
 import java.io.InputStream;
 import java.util.Scanner;
 
-public class ScannerConsoleInput implements ConsoleInput {
+public class ScannerConsoleInput implements UserInput {
     Scanner scanner;
 
     public ScannerConsoleInput(final InputStream inputStream) {
