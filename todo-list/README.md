@@ -1,6 +1,6 @@
 # Todo list application
 ### Haw to start
 ```
-gradle build
-gradle runApp
+./todo-list/start.sh
 ```
+

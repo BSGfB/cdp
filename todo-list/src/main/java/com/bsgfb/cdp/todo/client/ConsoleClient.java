@@ -6,6 +6,8 @@ import com.bsgfb.cdp.todo.service.TodoListService;
 import com.bsgfb.cdp.todo.util.ConsoleInput;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -14,6 +16,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ConsoleClient {
+    private static final Logger LOGGER = LogManager.getLogger(ConsoleClient.class);
+
     private TodoListService todoListService;
     private ConsoleInput consoleInput;
 
@@ -27,7 +31,7 @@ public class ConsoleClient {
     }
 
     private Map<Long, Long> showTodoList() {
-        System.out.println("Todo list:");
+        LOGGER.debug("Todo list:");
         List<Todo> all = todoListService.findAll().stream().sorted(Comparator.comparing(Todo::getStatus)).collect(Collectors.toList());
 
         Map<Long, Long> menuNumberTodoIdMap = new HashMap<>();
@@ -35,19 +39,19 @@ public class ConsoleClient {
             Todo currentTodo = all.get(i);
 
             menuNumberTodoIdMap.put((long) i, currentTodo.getId());
-            System.out.println(String.format("[%2d] - %s", i, currentTodo));
+            LOGGER.debug(String.format("[%2d] - %s", i, currentTodo));
         }
 
         return menuNumberTodoIdMap;
     }
 
     private void showSplitter() {
-        System.out.println("\n=============================\n");
+        LOGGER.debug("\n=============================\n");
     }
 
     private void showControlMenu() {
-        System.out.println("Menu:");
-        Arrays.stream(MenuPoint.values()).forEach(System.out::println);
+        LOGGER.debug("Menu:");
+        Arrays.stream(MenuPoint.values()).forEach(LOGGER::debug);
     }
 
     private void getOneController() {
@@ -59,45 +63,45 @@ public class ConsoleClient {
 
         if (isValidNumberInput(i, ids.size())) {
             Todo byId = todoListService.findById(ids.get(i));
-            System.out.println("You selected:" + byId);
+            LOGGER.debug("You selected:" + byId);
             changeStatusController(byId);
         } else {
-            System.out.println("Wrong input");
+            LOGGER.debug("Wrong input");
         }
     }
 
     private void changeStatusController(Todo todo) {
-        System.out.println("Do you want change todo status?(yes/no)");
+        LOGGER.debug("Do you want change todo status?(yes/no)");
         if(consoleInput.readString().equalsIgnoreCase("yes"))
             todoListService.updateTodoStatusById(todo.getId(), todo.getStatus() == TodoStatus.IN_PROGRESS ? TodoStatus.DONE: TodoStatus.IN_PROGRESS);
     }
 
     private void addTodoController() {
-        System.out.println("Create new todo item");
+        LOGGER.debug("Create new todo item");
         System.out.print("Task is: ");
         String task = consoleInput.readString();
-        System.out.println("Task: " + task);
+        LOGGER.debug("Task: " + task);
         if (isValidTextInput(task)) {
             todoListService.save(new Todo(task));
         } else {
-            System.out.println("KEK");
+            LOGGER.debug("KEK");
         }
     }
 
     private void removeAllController() {
-        System.out.println("Are you sure?(yes/no)");
+        LOGGER.debug("Are you sure?(yes/no)");
         String answer = consoleInput.readString();
 
         if (isValidTextInput(answer) && answer.equalsIgnoreCase("yes")) {
             todoListService.removeAll();
-            System.out.println("All records were deleted!");
+            LOGGER.debug("All records were deleted!");
         } else {
-            System.out.println("You said no!");
+            LOGGER.debug("You said no!");
         }
     }
 
     private void loadFromFileController() {
-        System.out.println("Loading data from file");
+        LOGGER.debug("Loading data from file");
         System.out.print("File address: ");
         String filePath = consoleInput.readString();
         try {
@@ -105,18 +109,18 @@ public class ConsoleClient {
                     .readValue(new FileInputStream(filePath), Todo[].class))
                     .forEach(todoListService::save);
         } catch (IOException e) {
-            System.out.println("Cannot load from file: [" + e.getMessage() + "]");
+            LOGGER.debug("Cannot load from file: [" + e.getMessage() + "]");
         }
     }
 
     private void saveToFileController() {
-        System.out.println("Saving data to file");
+        LOGGER.debug("Saving data to file");
         System.out.print("File address: ");
         String filePath = consoleInput.readString();
         try {
             objectMapper.writeValue(new FileOutputStream(filePath), todoListService.findAll());
         } catch (IOException e) {
-            System.out.println("Cannot write to file. Error: [" + e.getMessage() + "]");
+            LOGGER.debug("Cannot write to file. Error: [" + e.getMessage() + "]");
         }
     }
 
@@ -130,7 +134,7 @@ public class ConsoleClient {
         if (isValidNumberInput(i, ids.size())) {
             todoListService.remove(ids.get(i));
         } else {
-            System.out.println("Wrong input");
+            LOGGER.debug("Wrong input");
         }
     }
 
@@ -143,7 +147,7 @@ public class ConsoleClient {
     private void controller(MenuPoint menuPoint) {
         switch (menuPoint) {
             case EXIT:
-                System.out.println("Application is going to exit!");
+                LOGGER.debug("Application is going to exit!");
                 break;
             case GET_ONE:
                 getOneController();
@@ -167,7 +171,7 @@ public class ConsoleClient {
                 showAll();
                 break;
             case UNDEFINED:
-                System.out.println("Wrong input");
+                LOGGER.debug("Wrong input");
                 break;
         }
     }
