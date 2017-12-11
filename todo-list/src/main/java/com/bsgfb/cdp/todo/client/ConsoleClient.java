@@ -3,14 +3,11 @@ package com.bsgfb.cdp.todo.client;
 import com.bsgfb.cdp.todo.model.Todo;
 import com.bsgfb.cdp.todo.model.TodoStatus;
 import com.bsgfb.cdp.todo.service.TodoListService;
+import com.bsgfb.cdp.todo.util.FileHelper;
 import com.bsgfb.cdp.todo.util.UserInput;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -20,14 +17,13 @@ public class ConsoleClient {
 
     private TodoListService todoListService;
     private UserInput userInput;
+    private FileHelper fileHelper;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
 
-    public ConsoleClient(final TodoListService todoListService, UserInput userInput) {
+    public ConsoleClient(final TodoListService todoListService, UserInput userInput, FileHelper fileHelper) {
         this.todoListService = todoListService;
         this.userInput = userInput;
-
-        objectMapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
+        this.fileHelper = fileHelper;
     }
 
     private Map<Long, Long> showTodoList() {
@@ -72,8 +68,8 @@ public class ConsoleClient {
 
     private void changeStatusController(Todo todo) {
         LOGGER.debug("Do you want change todo status?(yes/no)");
-        if(userInput.readString().equalsIgnoreCase("yes"))
-            todoListService.updateTodoStatusById(todo.getId(), todo.getStatus() == TodoStatus.IN_PROGRESS ? TodoStatus.DONE: TodoStatus.IN_PROGRESS);
+        if (userInput.readString().equalsIgnoreCase("yes"))
+            todoListService.updateTodoStatusById(todo.getId(), todo.getStatus() == TodoStatus.IN_PROGRESS ? TodoStatus.DONE : TodoStatus.IN_PROGRESS);
     }
 
     private void addTodoController() {
@@ -105,9 +101,7 @@ public class ConsoleClient {
         LOGGER.debug("File address: ");
         String filePath = userInput.readString();
         try {
-            Arrays.asList(objectMapper
-                    .readValue(new FileInputStream(filePath), Todo[].class))
-                    .forEach(todoListService::save);
+            fileHelper.fromFile(filePath).forEach(todoListService::save);
         } catch (IOException e) {
             LOGGER.debug("Cannot load from file: [" + e.getMessage() + "]");
         }
@@ -118,7 +112,7 @@ public class ConsoleClient {
         LOGGER.debug("File address: ");
         String filePath = userInput.readString();
         try {
-            objectMapper.writeValue(new FileOutputStream(filePath), todoListService.findAll());
+            fileHelper.toFile(filePath, todoListService.findAll());
         } catch (IOException e) {
             LOGGER.debug("Cannot write to file. Error: [" + e.getMessage() + "]");
         }
@@ -196,7 +190,7 @@ public class ConsoleClient {
         return number >= 0 && number < to;
     }
 
-    private enum MenuPoint {
+    public enum MenuPoint {
         EXIT(0, "exit"),
         ADD_TODO(1, "Add todo"),
         REMOVE_TODO(2, "Remove one"),
@@ -215,32 +209,21 @@ public class ConsoleClient {
             this.text = text;
         }
 
-        public static MenuPoint getInstance(Integer number) {
-            switch (number) {
-                case 0:
-                    return MenuPoint.EXIT;
-                case 1:
-                    return MenuPoint.ADD_TODO;
-                case 2:
-                    return MenuPoint.REMOVE_TODO;
-                case 3:
-                    return MenuPoint.REMOVE_ALL;
-                case 4:
-                    return MenuPoint.GET_ONE;
-                case 5:
-                    return MenuPoint.SAVE_TO_FILE;
-                case 6:
-                    return MenuPoint.LOAD_FROM_FILE;
-                case 7:
-                    return MenuPoint.SHOW_ALL;
-                default:
-                    return MenuPoint.UNDEFINED;
-            }
+        public static MenuPoint getInstance(final Integer number) {
+            return Arrays
+                    .stream(values())
+                    .filter(menuPoint -> Objects.equals(menuPoint.id, number))
+                    .findFirst()
+                    .orElse(UNDEFINED);
         }
 
         @Override
         public String toString() {
             return String.format("[%2d] - %s", id, text);
+        }
+
+        public Integer getId() {
+            return id;
         }
     }
 }
