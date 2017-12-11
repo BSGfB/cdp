@@ -58,7 +58,7 @@ public class ConsoleClient {
         Map<Long, Long> ids = showTodoList();
         showSplitter();
 
-        System.out.print("Witch one: ");
+        LOGGER.debug("Witch one: ");
         long i = consoleInput.readNumber();
 
         if (isValidNumberInput(i, ids.size())) {
@@ -78,7 +78,7 @@ public class ConsoleClient {
 
     private void addTodoController() {
         LOGGER.debug("Create new todo item");
-        System.out.print("Task is: ");
+        LOGGER.debug("Task is: ");
         String task = consoleInput.readString();
         LOGGER.debug("Task: " + task);
         if (isValidTextInput(task)) {
@@ -102,7 +102,7 @@ public class ConsoleClient {
 
     private void loadFromFileController() {
         LOGGER.debug("Loading data from file");
-        System.out.print("File address: ");
+        LOGGER.debug("File address: ");
         String filePath = consoleInput.readString();
         try {
             Arrays.asList(objectMapper
@@ -115,7 +115,7 @@ public class ConsoleClient {
 
     private void saveToFileController() {
         LOGGER.debug("Saving data to file");
-        System.out.print("File address: ");
+        LOGGER.debug("File address: ");
         String filePath = consoleInput.readString();
         try {
             objectMapper.writeValue(new FileOutputStream(filePath), todoListService.findAll());
@@ -128,7 +128,7 @@ public class ConsoleClient {
         Map<Long, Long> ids = showTodoList();
         showSplitter();
 
-        System.out.print("Witch one: ");
+        LOGGER.debug("Witch one: ");
         long i = consoleInput.readNumber();
 
         if (isValidNumberInput(i, ids.size())) {
@@ -140,7 +140,7 @@ public class ConsoleClient {
 
     private void showAll() {
         showTodoList();
-        System.out.print("[Press enter]");
+        LOGGER.debug("[Press enter]");
         consoleInput.readString();
     }
 
