@@ -3,6 +3,10 @@ package com.bsgfb.cdp.todo.util;
 import java.io.InputStream;
 import java.util.Scanner;
 
+/**
+ * Console implementation of UserInput
+ * Read number till you write one. Removes all \n from input stream
+ */
 public class ScannerConsoleInput implements UserInput {
     Scanner scanner;
 

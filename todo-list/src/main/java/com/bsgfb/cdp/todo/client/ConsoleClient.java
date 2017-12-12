@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Console client is console application for interaction with todo list
+ */
 public class ConsoleClient {
     private static final Logger LOGGER = LogManager.getLogger(ConsoleClient.class);
 
@@ -19,7 +22,12 @@ public class ConsoleClient {
     private UserInput userInput;
     private FileHelper fileHelper;
 
-
+    /**
+     * Create ConsoleClient application
+     * @param todoListService service for interaction with todo list
+     * @param userInput way to get user commands
+     * @param fileHelper way to work with files
+     */
     public ConsoleClient(final TodoListService todoListService, UserInput userInput, FileHelper fileHelper) {
         this.todoListService = todoListService;
         this.userInput = userInput;
@@ -170,6 +178,9 @@ public class ConsoleClient {
         }
     }
 
+    /**
+     * Run Console application.
+     */
     public void run() {
         MenuPoint menuPoint;
 

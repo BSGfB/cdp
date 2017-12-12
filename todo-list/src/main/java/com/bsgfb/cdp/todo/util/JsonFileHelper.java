@@ -10,6 +10,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Json implementation of file helper
+ * Will convert todo items from list to json and from json to todo list
+ */
 public class JsonFileHelper implements FileHelper {
     private ObjectMapper objectMapper = new ObjectMapper();
 
