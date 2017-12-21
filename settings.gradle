@@ -1,4 +1,8 @@
 rootProject.name = 'cdp'
 include 'todo-list'
 include 'classloader'
+include 'classloader:language-module-api'
+include 'classloader:russian-language-module'
+include 'classloader:english-language-module'
+include 'classloader:loader'
 
