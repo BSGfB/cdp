@@ -6,28 +6,13 @@ The application has console menu for choosing option, the output is done through
 
 ## Getting Started
 
-### Create jar file
-Go to src/main/resources and create
-```
-out/
-libs/
-```
+### Prerequisites
 
-Create RussianLanguageModule module:
-```
-javac -cp ./src/main/java ./src/main/java/com/test/module/model/RussianLanguageModule.java -d ./out/ -classpath ./libs/log4j-core-2.10.0.jar:./libs/log4j-api-2.10.0.jar:./libs/LanguageModuleApi.jar
-jar cvfm RussianLanguageModule.jar ./src/main/resources/META-INF/MANIFEST.MF -C out/ .
-```
-Create EnglishLanguageModule module:
-```
-javac -cp ./src/main/java ./src/main/java/com/test/module/model/EnglishLanguageModule.java -d ./out/ -classpath ./libs/log4j-core-2.10.0.jar:./libs/log4j-api-2.10.0.jar:./libs/LanguageModuleApi.jar
-jar cvfm EnglishLanguageModule.jar ./src/main/resources/META-INF/MANIFEST.MF -C out/ .
-```
+* [Gradle](https://gradle.org/) - Dependency Management, [how to install](https://gradle.org/install/)
 
 ### Run application
 ```
-./gradlew classloader:clean classloader:build classloader:fatJar
-java -jar "./classloader/build/libs/classloader-1.0-SNAPSHOT.jar"
+./gradlew classloader:loader:runApp
 ```
 
 ## Built With
