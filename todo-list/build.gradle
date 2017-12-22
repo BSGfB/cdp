@@ -18,7 +18,6 @@ dependencies {
 
     compile group: 'com.fasterxml.jackson.core',    name: 'jackson-databind',   version: jacksonDatabindVersion
     compile group: 'org.apache.logging.log4j',      name: 'log4j-core',         version: log4jVersion
-
 }
 
 task fatJar(type: Jar) {

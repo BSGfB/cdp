@@ -1,14 +1,28 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'info.solidsoft.gradle.pitest', name: 'gradle-pitest-plugin', version: '1.2.4'
+    }
+}
+
 group 'com.bsgfb'
 version '1.0-SNAPSHOT'
 
-apply plugin: 'java'
+subprojects {
+    apply plugin: "info.solidsoft.pitest"
 
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    pitest {
+        enableDefaultIncrementalAnalysis = true
+        targetClasses = ['com.bsgfb.cdp.*']
+        outputFormats = ['HTML', 'XML']
+        mutators = ['DEFAULTS',
+                    'CONSTRUCTOR_CALLS',
+                    'INLINE_CONSTS',
+                    'REMOVE_CONDITIONALS',
+                    'EXPERIMENTAL_MEMBER_VARIABLE',
+                    'EXPERIMENTAL_SWITCH']
+        failWhenNoMutations = false
+    }
 }
