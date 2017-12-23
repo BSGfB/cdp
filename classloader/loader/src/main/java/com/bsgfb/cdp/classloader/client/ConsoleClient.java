@@ -2,7 +2,7 @@ package com.bsgfb.cdp.classloader.client;
 
 import com.bsgfb.cdp.classloader.loader.ModuleLoader;
 import com.bsgfb.cdp.classloader.model.LanguageModule;
-import com.bsgfb.cdp.classloader.util.ScannerUtil;
+import com.bsgfb.cdp.classloader.util.UserInput;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,7 +12,6 @@ import java.nio.file.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
 
 import static java.util.stream.Collectors.toList;
 
@@ -23,7 +22,7 @@ public class ConsoleClient {
     private final static Logger logger = LogManager.getLogger(ModuleLoader.class);
     private static final String PACKAGE = "com/bsgfb/cdp/classloader/model";
 
-    private Scanner scanner;
+    private UserInput input;
     private List<Path> modules;
     private ClassLoader classLoader = null;
     private List<String> classNames;
@@ -31,12 +30,12 @@ public class ConsoleClient {
     /**
      * Creates client to manage classloader
      *
-     * @param scanner          to get input values
+     * @param input            to get input values
      * @param pathToModulesDir path, where modules(jar files) are stored
      * @throws IOException if, modules cannot be loaded
      */
-    public ConsoleClient(final Scanner scanner, final String pathToModulesDir) throws IOException {
-        this.scanner = scanner;
+    public ConsoleClient(final UserInput input, final String pathToModulesDir) throws IOException {
+        this.input = input;
         this.modules = findModules(pathToModulesDir);
     }
 
@@ -78,7 +77,7 @@ public class ConsoleClient {
      * @throws IOException if io exception occurs
      */
     private void selectModule() throws IOException {
-        int i = ScannerUtil.nextInt(scanner);
+        int i = input.nextInt();
         if (i < 0 || i >= modules.size())
             throw new IllegalStateException("Selected index doesn't exist");
         logger.debug("Selected [" + i + "]");
@@ -124,7 +123,7 @@ public class ConsoleClient {
             logger.debug("[" + i + "] - " + globalMenus.get(i));
 
         logger.debug("Select: ");
-        int i = ScannerUtil.nextInt(scanner);
+        int i = input.nextInt();
         GlobalMenuItem byId = GlobalMenuItem.getById(i);
         logger.debug("Selected: " + byId);
 
@@ -138,7 +137,7 @@ public class ConsoleClient {
      *
      * @param paths list of path to jar files
      */
-    private static void showModules(List<Path> paths) {
+    private void showModules(List<Path> paths) {
         logger.debug("======================================");
         for (int i = 0; i < paths.size(); i++) {
             Path path = paths.get(i);
@@ -152,9 +151,9 @@ public class ConsoleClient {
      *
      * @param pathToModules relative or full path to jar file
      * @return jar file list from pathToModules folder
-     * @throws IOException if
+     * @throws IOException if io exceptions occurs
      */
-    private static List<Path> findModules(String pathToModules) throws IOException {
+    private List<Path> findModules(String pathToModules) throws IOException {
         return Files
                 .list(Paths.get(pathToModules).toAbsolutePath())
                 .filter(path -> path.getFileName().toString().endsWith(".jar"))
@@ -174,7 +173,7 @@ public class ConsoleClient {
         for (int i = 0; i < classNames.size(); i++)
             logger.debug("[" + i + "] - " + classNames.get(i));
 
-        int i = ScannerUtil.nextInt(scanner);
+        int i = input.nextInt();
         if (i < 0 || i >= classNames.size())
             throw new IllegalStateException("Index doesn't exist");
 
@@ -187,7 +186,7 @@ public class ConsoleClient {
     /**
      * Class to manage main menu
      */
-    private enum GlobalMenuItem {
+    public enum GlobalMenuItem {
         /**
          * Terminate application
          */
@@ -218,6 +217,10 @@ public class ConsoleClient {
                     .filter(globalMenuItem -> globalMenuItem.id == id)
                     .findFirst()
                     .orElseThrow(IllegalArgumentException::new);
+        }
+
+        public int getId() {
+            return id;
         }
     }
 }
