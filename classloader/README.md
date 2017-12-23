@@ -15,6 +15,18 @@ The application has console menu for choosing option, the output is done through
 ./gradlew classloader:loader:runApp
 ```
 
+
+## Running the tests
+
+Explain how to run the automated tests for this system
+
+### Unit tests
+
+
+```
+./gradlew classloader:loader:test
+```
+
 ## Built With
 
 * [Gradle](https://gradle.org/) - Dependency Management
