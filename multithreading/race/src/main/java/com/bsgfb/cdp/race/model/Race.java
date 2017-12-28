@@ -26,11 +26,11 @@ public class Race implements Runnable {
             try {
                 TimeUnit.MILLISECONDS.sleep(car.getBestLapTime());
             } catch (InterruptedException e) {
-                break;
+                return;
             }
 
             if (Thread.interrupted())
-                break;
+                return;
         }
 
         completableFuture.complete(car);

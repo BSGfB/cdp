@@ -1,6 +1,7 @@
 package com.bsgfb.cdp.race.runner;
 
 import com.bsgfb.cdp.race.model.Car;
+import com.bsgfb.cdp.race.model.Race;
 import com.bsgfb.cdp.race.util.ThreadUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,20 +25,11 @@ public class Start {
 
         ExecutorService service = Executors.newFixedThreadPool(cars.length);
 
-        CompletableFuture[] completableFutures = Stream.of(cars).parallel().map(car -> {
-            CompletableFuture<Car> carCompletableFuture = new CompletableFuture<>();
-            Future<?> submit = service.submit(new com.bsgfb.cdp.race.model.Race(car, carCompletableFuture));
-            if (car.getPilotName().equals("Jonah")) {
-                CompletableFuture
-                        .runAsync(() -> ThreadUtil.sleep(5000))
-                        .thenRunAsync(() -> {
-                            submit.cancel(true);
-                            carCompletableFuture.cancel(true);
-                        });
-            }
-
-            return carCompletableFuture.thenApplyAsync(top::add);
-        }).toArray(CompletableFuture[]::new);
+        CompletableFuture[] completableFutures = Stream.of(cars)
+                .parallel()
+                .map(car -> startRace(car, service))
+                .map(future -> future.thenApplyAsync(top::add))
+                .toArray(CompletableFuture[]::new);
 
         try {
             CompletableFuture.allOf(completableFutures).get();
@@ -49,4 +41,25 @@ public class Start {
         logger.debug("The first one is [" + top.element().getPilotName() + "]");
         service.shutdown();
     }
+
+    static CompletableFuture<Car> startRace(final Car car, final ExecutorService service) {
+        CompletableFuture<Car> carCompletableFuture = new CompletableFuture<>();
+        Future<?> submit = service.submit(new Race(car, carCompletableFuture));
+
+        if (car.getPilotName().equals("Jonah"))
+            disqualify(submit, carCompletableFuture);
+
+        return carCompletableFuture;
+    }
+
+    static void disqualify(Future future, CompletableFuture<Car> carCompletableFuture) {
+        CompletableFuture
+                .runAsync(() -> ThreadUtil.sleep(5000))
+                .thenRunAsync(() -> {
+                    future.cancel(true);
+                    carCompletableFuture.cancel(true);
+                });
+    }
+
+
 }
