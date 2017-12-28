@@ -15,7 +15,22 @@ dependencies {
     compile     group: 'org.apache.logging.log4j',  name: 'log4j-core', version: log4jVersion
 }
 
-task(type: JavaExec, dependsOn: ['build'], 'runApp') {
+task(type: JavaExec, dependsOn: ['build'], 'runDeadlockApp') {
+    description 'Runs todo list application'
+    doFirst {
+        file('target').mkdirs()
+    }
+
+    main = deadlockMainClass
+    classpath = tasks.jar.outputs.files + configurations.runtime
+    systemProperties = System.properties
+
+    doLast {
+        file('target').delete()
+    }
+}
+
+task(type: JavaExec, dependsOn: ['build'], 'runNonLockApp') {
     description 'Runs todo list application'
     doFirst {
         file('target').mkdirs()

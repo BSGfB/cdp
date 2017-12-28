@@ -7,3 +7,6 @@ include 'classloader:english-language-module'
 include 'classloader:loader'
 include 'multithreading'
 include 'multithreading:race'
+include 'multithreading:deadlock'
+findProject(':multithreading:deadlock')?.name = 'deadlock'
+
