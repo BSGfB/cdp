@@ -1,31 +1,9 @@
 # Multithreading: Classic Model and Concurrency
 
-Console application for dynamic reloading of existing development functionality. 
-A piece of functionality is placed in resource directory and archived in jar. 
-The application has console menu for choosing option, the output is done through usage of log4j library.
+## Tasks
 
-## Getting Started
-
-### Prerequisites
-
-* [Gradle](https://gradle.org/) - Dependency Management, [how to install](https://gradle.org/install/)
-
-### Run application
-```
-./gradlew classloader:loader:runApp
-```
-
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Unit tests
-
-
-```
-./gradlew classloader:loader:test
-```
+1. [todo-list](race/README.md) - Create app, which will launch race for several different cars
+1. [todo-list](deadlock/README.md) - Emulate none trivial deadlock
 
 ## Built With
 

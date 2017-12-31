@@ -1,5 +1,8 @@
 package com.bsgfb.cdp.race.model;
 
+/**
+ * Represents car, where bestLapTime show haw fast pilot can finish one lap
+ */
 public class Car {
     private String pilotName;
     private Long bestLapTime;

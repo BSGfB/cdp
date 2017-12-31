@@ -6,6 +6,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Stream;
 
+/**
+ * Deadlock between three threads
+ */
 public class DeadlockStart {
 
 
@@ -16,11 +19,12 @@ public class DeadlockStart {
         Object lock2 = "lock2";
         Object lock3 = "lock3";
 
-        Stream.of(
-                new BlockingRunner(lock1, lock2),
-                new BlockingRunner(lock2, lock3),
-                new BlockingRunner(lock3, lock1)
-        ).forEach(service::submit);
+        Stream
+                .of(
+                        new BlockingRunner(lock1, lock2),
+                        new BlockingRunner(lock2, lock3),
+                        new BlockingRunner(lock3, lock1))
+                .forEach(service::submit);
 
         service.shutdown();
     }

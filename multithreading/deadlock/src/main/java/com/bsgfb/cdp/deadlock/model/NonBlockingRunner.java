@@ -7,6 +7,11 @@ import java.util.concurrent.TimeUnit;
 
 import static com.bsgfb.cdp.deadlock.util.LogUtil.*;
 
+/**
+ * Non blocking Runnable for thread
+ * <p>
+ * Non blocking? because synchronized blocks located consistently
+ */
 public class NonBlockingRunner implements Runnable {
     private final static Logger logger = LogManager.getLogger(BlockingRunner.class);
 

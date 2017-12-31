@@ -6,6 +6,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Stream;
 
+/**
+ * Non blocking runner
+ */
 public class Start {
     public static void main(String[] args) {
         ExecutorService service = Executors.newFixedThreadPool(3);

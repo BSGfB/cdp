@@ -7,6 +7,13 @@ import java.util.concurrent.TimeUnit;
 
 import static com.bsgfb.cdp.deadlock.util.LogUtil.*;
 
+/**
+ * Run thread which has code to block current thread
+ * <p>
+ * Blocking happens when more than one thread started at the same time,
+ * try to lock1 and lock2 in different order. Blocking is possible,
+ * because there are two nested synchronized block
+ */
 public class BlockingRunner implements Runnable {
     private final static Logger logger = LogManager.getLogger(BlockingRunner.class);
 

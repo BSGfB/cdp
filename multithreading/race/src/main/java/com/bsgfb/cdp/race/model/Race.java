@@ -6,6 +6,9 @@ import org.apache.logging.log4j.Logger;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Represent race, where LAPS a number of laps.
+ */
 public class Race implements Runnable {
     private final static Logger logger = LogManager.getLogger(Race.class);
     private static final Integer LAPS = 10;

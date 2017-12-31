@@ -21,7 +21,7 @@
 ### Unit tests
 
 ```
-./gradlew classloader:loader:test
+./gradlew multithreading:deadlock:test
 ```
 
 ## Overview results
