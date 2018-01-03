@@ -1,5 +1,6 @@
 package com.bsgfb.cdp.gc.model;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class Node {
@@ -8,6 +9,7 @@ public class Node {
 
     public Node(int byteSize) {
         this.array = new long[byteSize];
+        Arrays.fill(this.array, Long.MAX_VALUE);
     }
 
     public List<Node> getLinks() {

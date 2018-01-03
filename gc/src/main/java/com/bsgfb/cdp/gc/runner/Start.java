@@ -9,19 +9,19 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toList;
 
 public class Start {
-    private static final Long OBJECTS_AMOUNT = 1024L;
     private static final Random RANDOM = new Random();
 
     public static void main(String[] args) {
+        Long objectsNumber = Long.valueOf(System.getProperty("gc.objectsNumber", "1024"));
+        System.out.println("Objects number are [" + objectsNumber + "]");
+
         while (true) {
             List<Node> nodes = Stream
-                    .generate(() -> new Node(RANDOM.nextInt(500) * 1024))
-                    .limit(OBJECTS_AMOUNT)
+                    .generate(() -> new Node(RANDOM.nextInt(100) * 1024))
+                    .limit(objectsNumber)
                     .collect(toList());
 
             nodes.forEach(node -> node.setLinks(selectRandomly(nodes)));
-
-            System.out.println("Sleep");
         }
     }
 
