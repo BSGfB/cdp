@@ -1,7 +1,8 @@
-# Multithreading: Classic Model and Concurrency
+# Multithreading: TASK 2
 
 1. Emulate none trivial deadlock. At least three threads should take participation In deadlock. Catch & analyze this deadlock using visualvm and/or jconsole.
 2. Fix the deadlock from p. 1 using none blocking synchronization.
+
 ## Getting Started
 
 ### Prerequisites

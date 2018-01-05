@@ -11,9 +11,9 @@ with young professionals (mentees) aspiring to key positions on their projects.
 [Card](https://trello.com/c/wwwtU7K3)
 2. [classloader](classloader/README.md) - Application to work with custom classloader
 [Card](https://trello.com/c/zLfaDARi)
-3. [classloader](multithreading/README.md) - Multithreading: Classic Model and Concurrency
+3. [Multithreading](multithreading/README.md) - Multithreading: Classic Model and Concurrency
 [Card](https://trello.com/c/yYh39I8a)
-4. [classloader](gc/README.md) - Memory Management and Garbage Collection
+4. [GC](gc/README.md) - Memory Management and Garbage Collection
 [Card](https://trello.com/c/Cig0W7BM)
 
 ## Built With

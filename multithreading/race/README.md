@@ -1,4 +1,4 @@
-# Multithreading: Classic Model and Concurrency
+# Multithreading: TASK 1
 
 Create app, which will launch race for several different cars.
 1. Create cars with different parameters. Start cars simultaneously and parallel. Observe which finishes first.
