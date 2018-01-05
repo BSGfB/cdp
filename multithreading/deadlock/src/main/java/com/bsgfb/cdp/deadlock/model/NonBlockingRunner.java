@@ -13,7 +13,7 @@ import static com.bsgfb.cdp.deadlock.util.LogUtil.*;
  * Non blocking? because synchronized blocks located consistently
  */
 public class NonBlockingRunner implements Runnable {
-    private final static Logger logger = LogManager.getLogger(BlockingRunner.class);
+    private final static Logger logger = LogManager.getLogger(NonBlockingRunner.class);
 
     private final Object lock1;
     private final Object lock2;

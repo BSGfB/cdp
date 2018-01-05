@@ -50,7 +50,7 @@ public class BlockingRunner implements Runnable {
 
     private void work() {
         try {
-            TimeUnit.MILLISECONDS.sleep((long) 1000);
+            TimeUnit.MILLISECONDS.sleep(1000L);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
