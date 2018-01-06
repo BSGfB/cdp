@@ -10,45 +10,59 @@ import static com.bsgfb.cdp.deadlock.util.LogUtil.*;
 /**
  * Non blocking Runnable for thread
  * <p>
- * Non blocking? because synchronized blocks located consistently
+ * This class asks for permission to Waitress.
+ * After class gets all permissions, it executes method work()
+ * When all work is done, class release all permissions
  */
 public class NonBlockingRunner implements Runnable {
     private final static Logger logger = LogManager.getLogger(NonBlockingRunner.class);
 
-    private final Object lock1;
-    private final Object lock2;
+    private Waitress waitress;
 
-    public NonBlockingRunner(final Object lock1, final Object lock2) {
-        this.lock1 = lock1;
-        this.lock2 = lock2;
+    public NonBlockingRunner(final Waitress waitress) {
+        this.waitress = waitress;
     }
 
     @Override
     public void run() {
-        logger.debug(createLogTryLock(lock1));
-        synchronized (lock1) {
-            logger.debug(createLogLocked(lock1));
+        try {
+            for (int i = 0; i < 10; i++) {
+                logger.debug(createLogTryTakeSeat());
+                waitress.takeSeat();
+                logger.debug(createLogTakeSeat());
 
-            work();
+                logger.debug(createLogTryGetFork("left"));
+                waitress.getFork();
+                logger.debug(createLogGetFork("left"));
 
-            logger.debug(createLogReleaseLock(lock1));
-        }
+                logger.debug(createLogTryGetFork("right"));
+                waitress.getFork();
+                logger.debug(createLogGetFork("right"));
 
-        logger.debug(createLogTryLock(lock2));
-        synchronized (lock2) {
-            logger.debug(createLogLocked(lock2));
+                logger.debug(createLogStartEat());
+                work();
+                logger.debug(createLogEndEat());
 
-            work();
+                waitress.releaseFork();
+                logger.debug(createLogReleaseFork("left"));
 
-            logger.debug(createLogReleaseLock(lock2));
+                waitress.releaseFork();
+                logger.debug(createLogReleaseFork("right"));
+
+                waitress.releaseSeat();
+                logger.debug(createLogReleaseSeat());
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
         logger.debug(createLogEndMethod());
     }
 
+
     private void work() {
         try {
-            TimeUnit.MILLISECONDS.sleep((long) 1000);
+            TimeUnit.MILLISECONDS.sleep(5000L);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

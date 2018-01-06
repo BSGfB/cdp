@@ -1,6 +1,7 @@
 package com.bsgfb.cdp.deadlock.runner;
 
 import com.bsgfb.cdp.deadlock.model.NonBlockingRunner;
+import com.bsgfb.cdp.deadlock.model.Waitress;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -11,16 +12,16 @@ import java.util.stream.Stream;
  */
 public class Start {
     public static void main(String[] args) {
-        ExecutorService service = Executors.newFixedThreadPool(3);
+        ExecutorService service = Executors.newFixedThreadPool(5);
 
-        Object lock1 = "lock1";
-        Object lock2 = "lock2";
-        Object lock3 = "lock3";
+        Waitress waitress = new Waitress(3);
+        waitress.setDaemon(true);
+        waitress.start();
 
         Stream.of(
-                new NonBlockingRunner(lock1, lock2),
-                new NonBlockingRunner(lock2, lock3),
-                new NonBlockingRunner(lock3, lock1)
+                new NonBlockingRunner(waitress),
+                new NonBlockingRunner(waitress),
+                new NonBlockingRunner(waitress)
         ).forEach(service::submit);
 
         service.shutdown();
