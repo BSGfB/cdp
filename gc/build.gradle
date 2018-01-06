@@ -23,6 +23,11 @@ task(type: JavaExec, dependsOn: ['build'], 'runApp') {
     systemProperties = System.properties
     standardInput = System.in
 
+    System.getProperty("gc.jvm", "").split(" ").each {
+        println "jvmArgs: [$it]"
+        jvmArgs it
+    }
+
     doLast {
         file('target').delete()
         standardInput = null

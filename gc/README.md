@@ -44,6 +44,8 @@ StackOverflowError happened because function recursively call itself.
 Each function call puts new frame on top of stack. After a lot of calls, stack memory is end.
 OutOfMemoryException happened because there is a lot of objects in heap.
 
+5. Compare GC. Which one works better and when.
+[GC report](docs/GC.md)
 
 ## Built With
 

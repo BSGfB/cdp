@@ -14,10 +14,13 @@ public class Start {
     public static void main(String[] args) {
         Long objectsNumber = Long.valueOf(System.getProperty("gc.objectsNumber", "1024"));
         System.out.println("Objects number are [" + objectsNumber + "]");
+        Integer times = Integer.valueOf(System.getProperty("gc.times", "10"));
 
-        while (true) {
+
+        for (int i = 0; i < times; i++) {
+            System.out.println("Iteration number: " + i);
             List<Node> nodes = Stream
-                    .generate(() -> new Node(RANDOM.nextInt(100) * 1024))
+                    .generate(() -> new Node(RANDOM.nextInt(800) * 1024))
                     .limit(objectsNumber)
                     .collect(toList());
 
