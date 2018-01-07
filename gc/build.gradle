@@ -24,7 +24,6 @@ task(type: JavaExec, dependsOn: ['build'], 'runApp') {
     standardInput = System.in
 
     System.getProperty("gc.jvm", "").split(" ").each {
-        println "jvmArgs: [$it]"
         jvmArgs it
     }
 
@@ -34,15 +33,19 @@ task(type: JavaExec, dependsOn: ['build'], 'runApp') {
     }
 }
 
-task(type: JavaExec, dependsOn: ['build'], 'StackOverflowRunApp') {
+task(type: JavaExec, dependsOn: ['build'], 'stackOverflowRunApp') {
     doFirst {
         file('target').mkdirs()
     }
 
-    main = StackOverflowMainClass
+    main = stackOverflowMainClass
     classpath = tasks.jar.outputs.files + configurations.runtime
     systemProperties = System.properties
     standardInput = System.in
+
+    System.getProperty("gc.jvm", "").split(" ").each {
+        jvmArgs it
+    }
 
     doLast {
         file('target').delete()

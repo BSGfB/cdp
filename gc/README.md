@@ -30,12 +30,12 @@ gc.objectsNumber - the number of objects to create
 
 ### Run application with StackOverflowError
 ```
-
+./gradlew gc:stackOverflowMainClass -Dgc.jvm="-Xss1m"
 ```
 
 ### Run application with OutOfMemoryException
 ```
-./gradlew gc:runApp -Dgc.objectsNumber="15000"
+./gradlew gc:runApp -Dgc.objectsNumber="15000" -Dgc.jvm="-Xmx1g -Xms500m -Xmn250m"
 ```
 
 ## Tasks
