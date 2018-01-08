@@ -87,3 +87,38 @@ Options: -XX:+UseG1GC
 [Log](G1GC.log)
 
 [Report](G1GC.pdf)
+
+G1 with G1HeapRegionSize 1 mb
+```
+./gradlew gc:runApp -Dgc.objectsNumber="5000" -Dgc.jvm="-XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:G1GC_RegionHeapSize_32m.log -XX:+UseG1GC -XX:G1HeapRegionSize=1m"
+```
+
+[Log](.log)
+
+[Report](.pdf)
+
+G1 with G1HeapRegionSize 32 mb
+```
+./gradlew gc:runApp -Dgc.objectsNumber="5000" -Dgc.jvm="-XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:G1GC_RegionHeapSize_32m.log -XX:+UseG1GC -XX:G1HeapRegionSize=32m"
+```
+
+[Log](.log)
+
+[Report](.pdf)
+
+G1 with heap size modification
+```
+./gradlew gc:runApp -Dgc.objectsNumber="5000" -Dgc.jvm="-XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:G1GC_R_memory_config.log -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=80 -XX:SurvivorRatio=20"
+```
+
+[Log](.log)
+
+[Report](.pdf)
+
+| GC option name | Avg Pause GC Time  | Max Pause GC Time | Duration (secs) 0 - 0.1 | Total Time | Concurrent total Time | Total created bytes |
+| --- | --- | --- | --- | --- | --- | --- |
+| G1 memory | 46 ms | 240 ms | 32 ( 76.087%) | 3 sec 200 ms | 247 ms |  22.11 gb |
+| G1 region heap size 1 | 33 ms | 200 ms | 61 (83.562%) | 3 sec 540 ms | 369 ms | 21.48 gb |
+| G1 region heap size 32 | 59 ms | 390 ms | 58 (77.333%) | 5 sec 180 ms | 1 sec 292 ms |  20.16 gb |
+
+
