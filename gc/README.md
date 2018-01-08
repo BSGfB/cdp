@@ -1,4 +1,4 @@
-# Multithreading: Classic Model and Concurrency
+# Backend: Memory Management and Garbage Collection
 
 1. Создать тестовую java-программу, которая в бесконечном цикле
 2. создаёт большое количество объектов разного размера, на какое-то время держит на них референсы
