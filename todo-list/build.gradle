@@ -21,7 +21,7 @@ dependencies {
 }
 
 task fatJar(type: Jar) {
-    from files(sourceSets.main.output.classesDir)
+    from files(sourceSets.main.output)
     from { configurations.compile.collect { zipTree(it) } } {
         exclude "META-INF/*.SF"
         exclude "META-INF/*.DSA"

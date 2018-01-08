@@ -13,42 +13,39 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: junitVersion
 }
 
-task(type: JavaExec, dependsOn: ['build'], 'runApp') {
-    doFirst {
+
+class GcApp extends JavaExec {
+    public static final String JVM_OPTIONS = "gc.jvm"
+
+    GcApp() {
+        this.systemProperties System.properties
+
+        def jvm = System.properties.find({ JVM_OPTIONS == it.key })
+        if (Objects.nonNull(jvm))
+            jvm.value.split(" ").each(this.&jvmArgs)
+    }
+
+    @Override
+    Task doFirst(Action<? super Task> action) {
         file('target').mkdirs()
+        return super.doFirst(action)
     }
 
-    main = mainClass
-    classpath = tasks.jar.outputs.files + configurations.runtime
-    systemProperties = System.properties
-    standardInput = System.in
-
-    System.getProperty("gc.jvm", "").split(" ").each {
-        jvmArgs it
-    }
-
-    doLast {
+    @Override
+    Task doLast(Action<? super Task> action) {
         file('target').delete()
-        standardInput = null
+        return super.doLast(action)
     }
+
 }
 
-task(type: JavaExec, dependsOn: ['build'], 'stackOverflowRunApp') {
-    doFirst {
-        file('target').mkdirs()
-    }
+task(type: GcApp, dependsOn: ['build'], 'runApp') {
+    main = mainClass
+    classpath = tasks.jar.outputs.files + configurations.runtime
+    jvmArgs.each { println it }
+}
 
+task(type: GcApp, dependsOn: ['build'], 'stackOverflowRunApp') {
     main = stackOverflowMainClass
     classpath = tasks.jar.outputs.files + configurations.runtime
-    systemProperties = System.properties
-    standardInput = System.in
-
-    System.getProperty("gc.jvm", "").split(" ").each {
-        jvmArgs it
-    }
-
-    doLast {
-        file('target').delete()
-        standardInput = null
-    }
 }
