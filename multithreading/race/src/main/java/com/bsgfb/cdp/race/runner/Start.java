@@ -12,8 +12,8 @@ import java.util.stream.Stream;
 
 public class Start {
     private final static Logger logger = LogManager.getLogger(Start.class);
-    public static final String DISQUALIFIED_PILOT_NAME = "Jonah";
-    public static final long WAIT_TIME = 5000L;
+    private static final String DISQUALIFIED_PILOT_NAME = "Jonah";
+    private static final long WAIT_TIME = 5000L;
 
     /**
      * Main method to star race
@@ -31,12 +31,12 @@ public class Start {
     public static void main(String[] args) {
         Car[] cars = carFactory();
         ExecutorService service = Executors.newFixedThreadPool(cars.length);
+        CyclicBarrier cyclicBarrier = new CyclicBarrier(cars.length, () -> logger.debug("3 2 1 Go!!!"));
 
         Queue<Car> top = new ConcurrentLinkedQueue<>();
 
         CompletableFuture[] completableFutures = Stream.of(cars)
-                .parallel()
-                .map(car -> startRace(car, service))
+                .map(car -> startRace(car, service, cyclicBarrier))
                 .map(future -> future.thenApplyAsync(top::add))
                 .toArray(CompletableFuture[]::new);
 
@@ -59,9 +59,9 @@ public class Start {
      * @param service ExecutorService to run car
      * @return CompletableFuture with running car
      */
-    static CompletableFuture<Car> startRace(final Car car, final ExecutorService service) {
+    static CompletableFuture<Car> startRace(final Car car, final ExecutorService service, final CyclicBarrier cyclicBarrier) {
         CompletableFuture<Car> carCompletableFuture = new CompletableFuture<>();
-        Future<?> submit = service.submit(new Race(car, carCompletableFuture));
+        Future<?> submit = service.submit(new Race(car, carCompletableFuture, cyclicBarrier));
 
         if (DISQUALIFIED_PILOT_NAME.equals(car.getPilotName()))
             disqualify(submit, carCompletableFuture, WAIT_TIME);
