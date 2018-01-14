@@ -2,6 +2,8 @@ package com.bsgfb.cdp.patterns.proxy.dao;
 
 import com.bsgfb.cdp.patterns.proxy.mapper.PersonMapper;
 import com.bsgfb.cdp.patterns.proxy.model.Person;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -11,6 +13,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class JdbcPersonDao implements PersonDao {
+    private static final Logger LOGGER = LogManager.getLogger(JdbcPersonDao.class);
     private static final String SQL_PERSON_READ = "sql.person.read";
     private static final PersonMapper personMapper = new PersonMapper();
 
@@ -25,6 +28,7 @@ public class JdbcPersonDao implements PersonDao {
 
     @Override
     public Person readPerson(final String username) throws SQLException {
+        LOGGER.debug("readPerson with username [{}]", username);
         Person person;
 
         try (Connection connection = dataSource.getConnection()) {
@@ -37,6 +41,7 @@ public class JdbcPersonDao implements PersonDao {
             }
         }
 
+        LOGGER.debug("readPerson person [{}]", person.toString());
         return person;
     }
 }

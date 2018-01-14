@@ -14,6 +14,7 @@ import java.util.Properties;
 public class PersonDaoTest {
 
     private PersonDao personDao;
+    private PersonDao cashePersonDaoProxy;
 
     @Before
     public void init() throws IOException, ClassNotFoundException, SQLException {
@@ -28,6 +29,8 @@ public class PersonDaoTest {
         DatabaseUtil.populateDatabase(dataSource, queries);
 
         personDao = new JdbcPersonDao(queries, dataSource);
+
+        cashePersonDaoProxy = new CashePersonDaoProxy(dataSource, queries);
     }
 
     @Test
@@ -36,5 +39,14 @@ public class PersonDaoTest {
 
         Assert.assertEquals("Bob", bob.getUsername());
         Assert.assertEquals("123", bob.getPassword());
+    }
+
+    @Test
+    public void readPersonProxy() throws SQLException {
+        Person bob1 = cashePersonDaoProxy.readPerson("Bob");
+        Person bob2 = cashePersonDaoProxy.readPerson("Bob");
+        Person bob3 = cashePersonDaoProxy.readPerson("Bob");
+        Person siarhei = cashePersonDaoProxy.readPerson("Siarhei");
+        Person siarhei2 = cashePersonDaoProxy.readPerson("Siarhei");
     }
 }
