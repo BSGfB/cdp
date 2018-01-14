@@ -1,0 +1,23 @@
+plugins {
+    id 'io.franzbecker.gradle-lombok' version '1.11'
+    id 'java'
+}
+
+group 'com.bsgfb'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'com.google.guava', name: 'guava', version: '23.6-jre'
+    testCompile group: 'com.h2database', name: 'h2', version: '1.4.196'
+}
+
+lombok {
+    version = "1.16.20"
+}

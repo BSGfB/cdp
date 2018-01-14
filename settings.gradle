@@ -9,4 +9,4 @@ include 'multithreading'
 include 'multithreading:race'
 include 'multithreading:deadlock'
 include 'gc'
-
+include 'architecture-patterns:proxy'
