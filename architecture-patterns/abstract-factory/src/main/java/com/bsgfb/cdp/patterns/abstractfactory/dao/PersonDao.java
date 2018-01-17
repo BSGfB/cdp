@@ -1,7 +1,6 @@
 package com.bsgfb.cdp.patterns.abstractfactory.dao;
 
 import com.bsgfb.cdp.patterns.abstractfactory.model.Person;
-import com.google.common.collect.ImmutableList;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
