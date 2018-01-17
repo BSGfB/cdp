@@ -1,0 +1,29 @@
+plugins {
+    id 'io.franzbecker.gradle-lombok' version '1.11'
+    id 'java'
+}
+
+group 'com.bsgfb'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: junitVersion
+    compile group: 'com.h2database', name: 'h2', version: h2Version
+
+    compile group: 'com.google.guava', name: 'guava', version: guavaVersion
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4jVersion
+    compile group: 'io.reactivex.rxjava2', name: 'rxjava', version: rxJavaVersion
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: jacksonDatabindVersion
+    compile group: 'com.zaxxer', name: 'HikariCP', version: '2.7.6'
+
+}
+
+lombok {
+    version = lombokVersion
+}
