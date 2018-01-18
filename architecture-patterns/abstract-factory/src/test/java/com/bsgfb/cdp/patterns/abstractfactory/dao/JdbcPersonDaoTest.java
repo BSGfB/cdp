@@ -1,7 +1,7 @@
 package com.bsgfb.cdp.patterns.abstractfactory.dao;
 
 import com.bsgfb.cdp.patterns.abstractfactory.model.Person;
-import com.bsgfb.cdp.patterns.abstractfactory.util.HikariH2DataSourceFactory;
+import com.bsgfb.cdp.patterns.abstractfactory.util.HikariDataSourceFactory;
 import io.reactivex.Single;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -24,7 +24,7 @@ public class JdbcPersonDaoTest {
         Properties databaseProperties = readProperties("database.properties");
         Properties queries = readProperties("queries.properties");
 
-        DataSource dataSource = new HikariH2DataSourceFactory().createDataSource(databaseProperties);
+        DataSource dataSource = new HikariDataSourceFactory().createDataSource(databaseProperties);
 
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);
