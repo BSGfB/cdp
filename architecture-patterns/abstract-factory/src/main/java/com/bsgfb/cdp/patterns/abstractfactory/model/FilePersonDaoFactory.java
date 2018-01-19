@@ -8,7 +8,7 @@ import com.bsgfb.cdp.patterns.abstractfactory.util.JsonFileHelper;
 import java.io.IOException;
 
 public class FilePersonDaoFactory extends PersonDaoFactory {
-    private static final FileHelper FILE_HELPER = new JsonFileHelper();
+    private FileHelper FILE_HELPER = new JsonFileHelper();
 
     private String path;
     private Integer backupTime;
@@ -19,7 +19,7 @@ public class FilePersonDaoFactory extends PersonDaoFactory {
     }
 
     @Override
-    PersonDao createPersonDao() {
+    public PersonDao createPersonDao() {
         PersonDao personDao = null;
         try {
             personDao = new FilePersonDao(path, FILE_HELPER, backupTime);

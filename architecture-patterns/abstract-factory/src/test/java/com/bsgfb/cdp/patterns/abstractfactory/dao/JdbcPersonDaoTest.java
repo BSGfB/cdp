@@ -9,11 +9,10 @@ import org.junit.Test;
 
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
-import java.util.stream.IntStream;
+
+import static com.bsgfb.cdp.patterns.abstractfactory.util.JdbcUtil.populateDatabase;
 
 public class JdbcPersonDaoTest {
 
@@ -26,25 +25,7 @@ public class JdbcPersonDaoTest {
 
         DataSource dataSource = new HikariDataSourceFactory().createDataSource(databaseProperties);
 
-        try (Connection connection = dataSource.getConnection()) {
-            connection.setAutoCommit(false);
-            try (PreparedStatement create = connection.prepareStatement(queries.getProperty("sql.person.create-table"))) {
-                create.execute();
-            }
-
-            try (PreparedStatement insert = connection.prepareStatement(queries.getProperty("sql.person.save3"))) {
-                IntStream.range(0, 3).forEach(index -> {
-                    try {
-                        insert.setString(index * 2 + 1, "test_user_" + index);
-                        insert.setString(index * 2 + 2, "password" + index);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                });
-                insert.execute();
-            }
-            connection.commit();
-        }
+        populateDatabase(dataSource, queries);
 
         personDao = new JdbcPersonDao(dataSource, queries);
     }

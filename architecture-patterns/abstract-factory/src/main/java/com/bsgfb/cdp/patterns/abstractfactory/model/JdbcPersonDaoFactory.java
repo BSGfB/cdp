@@ -17,7 +17,7 @@ public class JdbcPersonDaoFactory extends PersonDaoFactory {
     }
 
     @Override
-    PersonDao createPersonDao() {
+    public PersonDao createPersonDao() {
         return new JdbcPersonDao(dataSource, queries);
     }
 }
