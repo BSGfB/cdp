@@ -15,7 +15,7 @@ public class FilePersonBackupDaoTest {
     public static final String TEST_TXT = "Test.txt";
 
     @Test
-    public void backupTest() throws IOException, InterruptedException {
+    public void backupTest() throws IOException {
         FileHelper fileHelper = EasyMock.createNiceMock(FileHelper.class);
         List<Person> people = new ArrayList<>();
         people.add(Person.builder().username("Bob").password("123").build());
@@ -26,7 +26,5 @@ public class FilePersonBackupDaoTest {
         replay(fileHelper);
 
         new FilePersonDao(TEST_TXT, fileHelper, 1);
-
-        Thread.sleep(4000);
     }
 }

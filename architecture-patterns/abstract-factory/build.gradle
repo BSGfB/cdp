@@ -28,3 +28,19 @@ dependencies {
 lombok {
     version = lombokVersion
 }
+
+task(type: JavaExec, dependsOn: ['build'], 'runApp') {
+    doFirst {
+        file('target').mkdirs()
+    }
+
+    main = mainClass
+    classpath = tasks.jar.outputs.files + configurations.runtime
+    systemProperties = System.properties
+    standardInput = System.in
+
+    doLast {
+        file('target').delete()
+        standardInput = null
+    }
+}

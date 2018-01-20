@@ -7,6 +7,8 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.Collections;
 
+import static org.junit.Assert.assertTrue;
+
 public class JsonFileHelperTest {
 
     public static final Person EXPECTED_TODO = Person.builder().username("Bob").password("123").build();
@@ -31,8 +33,7 @@ public class JsonFileHelperTest {
         new JsonFileHelper().toFile("wrong/file/exeptional!!!!!!", Collections.singletonList(EXPECTED_TODO));
     }
 
-    @Test(expected = IOException.class)
     public void toWrongFile() throws IOException {
-        new JsonFileHelper().fromFile("wrong/file/exeptional!!!!!!");
+        assertTrue(new JsonFileHelper().fromFile("wrong/file/exeptional!!!!!!").isEmpty());
     }
 }

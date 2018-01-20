@@ -5,9 +5,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -28,7 +30,9 @@ public class JsonFileHelper implements FileHelper {
 
     @Override
     public List<Person> fromFile(String path) throws IOException {
-        return objectMapper.readValue(new FileInputStream(path), new TypeReference<List<Person>>() {
-        });
+        if (new File(path).exists())
+            return objectMapper.readValue(new FileInputStream(path), new TypeReference<List<Person>>(){});
+        else
+            return new LinkedList<>();
     }
 }
