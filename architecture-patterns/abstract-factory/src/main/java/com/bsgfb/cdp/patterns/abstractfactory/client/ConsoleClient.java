@@ -64,7 +64,7 @@ public class ConsoleClient {
     }
 
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    private enum MenuItem {
+    public enum MenuItem {
         READ_ALL("Show all", 1),
         READ_ONE("Show one", 2),
         SAVE_ONE("Save one", 3),
@@ -77,6 +77,10 @@ public class ConsoleClient {
 
         public static MenuItem getInstance(final Integer value) {
             return Stream.of(values()).filter(v -> v.index.equals(value)).findFirst().orElse(UNDEFINED);
+        }
+
+        public Integer getIndex() {
+            return index;
         }
 
         @Override
