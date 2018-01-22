@@ -1,0 +1,42 @@
+plugins {
+    id 'io.franzbecker.gradle-lombok' version '1.11'
+    id 'java'
+}
+
+group 'com.bsgfb'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.easymock', name: 'easymock', version: easymockVersion
+
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4jVersion
+    compile group: 'com.google.guava', name: 'guava', version: guavaVersion
+}
+
+lombok {
+    version = lombokVersion
+}
+
+task(type: JavaExec, dependsOn: ['build'], 'runApp') {
+    doFirst {
+        file('target').mkdirs()
+    }
+
+    main = mainClass
+    classpath = tasks.jar.outputs.files + configurations.runtime
+    systemProperties = System.properties
+    standardInput = System.in
+
+    doLast {
+        file('target').delete()
+        standardInput = null
+    }
+}
