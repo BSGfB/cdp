@@ -5,6 +5,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
+/**
+ * Calculates number of employee
+ */
 public class NumberEmployees implements Visitor {
     private final static Logger logger = LogManager.getLogger(NumberEmployees.class);
 

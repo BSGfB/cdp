@@ -10,12 +10,24 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * FilePersonDao stores person in file.
+ *
+ * It's stores persons in memory, but every "backupPeriod" application writes persons to file with "path"
+ */
 public class FilePersonDao implements PersonDao {
 
     private String path;
     private FileHelper fileHelper;
     private List<Person> people;
 
+    /**
+     *
+     * @param path path to file
+     * @param fileHelper helps to write and read files
+     * @param backupPeriod period of time, to make backup
+     * @throws IOException if io exception accrued
+     */
     public FilePersonDao(final String path, FileHelper fileHelper, final Integer backupPeriod) throws IOException {
         this.path = path;
         this.fileHelper = fileHelper;

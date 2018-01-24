@@ -12,6 +12,13 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.stream.Stream;
 
+/**
+ * ConsoleClient is used to work with PersonDao.
+ *
+ * Constructor parameters:
+ * 1. userInput is abstraction on user input way
+ * 2. personDao class to work with person collation (database, file)
+ */
 @AllArgsConstructor
 public class ConsoleClient {
     private static final Logger LOGGER = LogManager.getLogger(ConsoleClient.class);
@@ -19,6 +26,12 @@ public class ConsoleClient {
     private UserInput userInput;
     private PersonDao personDao;
 
+    /**
+     * Run application flow.
+     * 1. Show menu
+     * 2. Select item
+     * 3. Performs operation according selected item
+     */
     public void run() {
         while (true) {
             MenuItem item = selectMenuItem();
@@ -46,11 +59,20 @@ public class ConsoleClient {
 
     }
 
+    /**
+     * Aggregate couple operation to one method. It's more human readable
+     * @param message to show in console
+     * @return value from userInput (String)
+     */
     private String readValue(String message) {
         LOGGER.debug("Person name: ");
         return userInput.readString();
     }
 
+    /**
+     * Show all MenuItem (except: UNDEFINED) and return selected menu item
+     * @return selected menu item
+     */
     private MenuItem selectMenuItem() {
         LOGGER.debug("Menu:");
         Stream.of(MenuItem.values()).filter(v -> v != MenuItem.UNDEFINED).forEachOrdered(LOGGER::debug);
@@ -63,6 +85,9 @@ public class ConsoleClient {
         }
     }
 
+    /**
+     * Aggregate all menu operations
+     */
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public enum MenuItem {
         READ_ALL("Show all", 1),

@@ -5,6 +5,10 @@ import com.bsgfb.cdp.patterns.abstractfactory.util.HikariDataSourceFactory;
 import lombok.Builder;
 import lombok.Getter;
 
+/**
+ * Factory configuration aggregator class
+ *
+ */
 @Builder
 @Getter
 public class FactoryConfiguration {

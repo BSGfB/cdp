@@ -7,7 +7,18 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.stream.IntStream;
 
+/**
+ * Contains jdbc util methods to facilitate humans life
+ */
 public class JdbcUtil {
+
+    /**
+     * Populate database with start values
+     *
+     * @param dataSource is used to connect to database
+     * @param queries to create requests to database
+     * @throws SQLException if sql exception occurs
+     */
     public static void populateDatabase(DataSource dataSource, Properties queries) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);

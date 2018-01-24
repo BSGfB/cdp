@@ -11,6 +11,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * Jdbc implementation of PersonDao
+ */
 public class JdbcPersonDao implements PersonDao {
     private static final String SQL_PERSON_FIND_BY_NAME = "sql.person.findByName";
     private static final String SQL_PERSON_FIND_ALL = "sql.person.findAll";
@@ -22,6 +25,10 @@ public class JdbcPersonDao implements PersonDao {
     private Properties queries;
     private DataSource dataSource;
 
+    /**
+     * @param dataSource datasource to work with database
+     * @param queries list of queries to make request to database
+     */
     public JdbcPersonDao(DataSource dataSource, Properties queries) {
         this.dataSource = dataSource;
         this.queries = queries;
@@ -74,6 +81,12 @@ public class JdbcPersonDao implements PersonDao {
         });
     }
 
+    /**
+     * Helps to map result set to Person
+     * @param resultSet from database
+     * @return new person, with data from result set
+     * @throws SQLException if sql exception accrues
+     */
     private Person mapToPerson(ResultSet resultSet) throws SQLException {
         return Person.builder()
                 .id(resultSet.getLong(ID))

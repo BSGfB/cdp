@@ -12,11 +12,22 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Proxy implementation of PersonDao
+ *
+ * This class contains cache and JdbcPersonDao.
+ * Before readPerson this class check if data contained in cache, otherwise return data from JdbcPersonDao
+ *
+ */
 public class CashePersonDaoProxy implements PersonDao {
     private static final Logger LOGGER = LogManager.getLogger(CashePersonDaoProxy.class);
 
     LoadingCache<String, Person> cache;
 
+    /**
+     * @param dataSource datasource to work with database
+     * @param queries list of queries to make request to database
+     */
     public CashePersonDaoProxy(final DataSource dataSource, final Properties queries) {
         PersonDao personDao = new JdbcPersonDao(queries, dataSource);
 

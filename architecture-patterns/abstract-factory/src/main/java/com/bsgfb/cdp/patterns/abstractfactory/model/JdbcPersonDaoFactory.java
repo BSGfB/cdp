@@ -6,6 +6,9 @@ import com.bsgfb.cdp.patterns.abstractfactory.dao.PersonDao;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+/**
+ * Creates jdbc based PersonDaoFactory
+ */
 public class JdbcPersonDaoFactory extends PersonDaoFactory {
 
     private DataSource dataSource;

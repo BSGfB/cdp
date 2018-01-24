@@ -10,6 +10,9 @@ import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
 
+/**
+ * Calculates salary raise in percents
+ */
 public class SalaryRaise implements Visitor {
     private final static Logger logger = LogManager.getLogger(SalaryRaise.class);
 

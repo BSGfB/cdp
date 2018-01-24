@@ -7,6 +7,11 @@ import com.bsgfb.cdp.patterns.abstractfactory.util.JsonFileHelper;
 
 import java.io.IOException;
 
+/**
+ * File based implementation of PersonDaoFactory
+ *
+ * It creates file based PersonDao. Now is only implemented Json file based dao
+ */
 public class FilePersonDaoFactory extends PersonDaoFactory {
     private FileHelper FILE_HELPER = new JsonFileHelper();
 

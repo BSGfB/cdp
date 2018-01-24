@@ -5,6 +5,11 @@ import com.zaxxer.hikari.HikariDataSource;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+/**
+ * Creates H2 memory database with hikari connection pool
+ *
+ * Default JDBC_POOL_SIZE is 5
+ */
 public class HikariDataSourceFactory implements DataSourceFactory {
     public static final String JDBC_URL = "jdbc.url";
     public static final String JDBC_USERNAME = "jdbc.username";

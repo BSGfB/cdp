@@ -6,6 +6,9 @@ import org.apache.logging.log4j.Logger;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * Calculates total salary
+ */
 public class TotalSalaries implements Visitor {
     private final static Logger logger = LogManager.getLogger(TotalSalaries.class);
 

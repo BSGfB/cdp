@@ -11,6 +11,18 @@ import static com.bsgfb.cdp.patterns.abstractfactory.util.JdbcUtil.populateDatab
 
 public abstract class PersonDaoFactory {
 
+    /**
+     * Create new PersonDaoFactory based on FactoryConfiguration
+     *
+     * Selection rules:
+     * If factoryConfiguration.getFileLocation() is present, them FilePersonDaoFactory
+     * otherwise JdbcPersonDaoFactory will be created
+     *
+     * @param factoryConfiguration is used to create appropriate PersonDaoFactory
+     * @return PersonDaoFactory according FactoryConfiguration
+     * @throws IOException if io exception occur
+     * @throws SQLException if sql exception occur
+     */
     public static PersonDaoFactory getFactory(final FactoryConfiguration factoryConfiguration) throws IOException, SQLException {
         if ("".equals(factoryConfiguration.getFileLocation())) {
             Properties databaseProperties = readProperties(factoryConfiguration.getDbProperties());

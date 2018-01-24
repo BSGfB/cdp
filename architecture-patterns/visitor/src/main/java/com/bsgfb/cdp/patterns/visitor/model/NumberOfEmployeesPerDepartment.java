@@ -8,6 +8,9 @@ import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
 
+/**
+ * Calculates number of employees per department
+ */
 public class NumberOfEmployeesPerDepartment implements Visitor {
     private final static Logger logger = LogManager.getLogger(NumberOfEmployeesPerDepartment.class);
 

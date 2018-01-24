@@ -5,6 +5,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
+/**
+ * Calculates average salary, for all employees
+ */
 public class AverageSalary implements Visitor {
     private final static Logger logger = LogManager.getLogger(AverageSalary.class);
 

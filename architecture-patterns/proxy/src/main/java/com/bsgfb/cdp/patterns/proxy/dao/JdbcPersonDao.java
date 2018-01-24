@@ -12,6 +12,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * Jdbc implementation of PersonDao
+ */
 public class JdbcPersonDao implements PersonDao {
     private static final Logger LOGGER = LogManager.getLogger(JdbcPersonDao.class);
     private static final String SQL_PERSON_READ = "sql.person.read";
@@ -21,6 +24,10 @@ public class JdbcPersonDao implements PersonDao {
 
     private DataSource dataSource;
 
+    /**
+     * @param dataSource datasource to work with database
+     * @param queries list of queries to make request to database
+     */
     public JdbcPersonDao(final Properties queries, final DataSource dataSource) {
         readPersonQuery = queries.getProperty(SQL_PERSON_READ);
         this.dataSource = dataSource;
