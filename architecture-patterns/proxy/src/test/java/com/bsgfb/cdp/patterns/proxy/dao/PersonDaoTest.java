@@ -49,13 +49,4 @@ public class PersonDaoTest {
         Assert.assertEquals("Bob", bob.getUsername());
         Assert.assertEquals("123", bob.getPassword());
     }
-
-    @Test
-    public void readPersonProxy() throws SQLException {
-        Person bob1 = cachePersonDabProxy.readPerson("Bob");
-        Person bob2 = cachePersonDabProxy.readPerson("Bob");
-        Person bob3 = cachePersonDabProxy.readPerson("Bob");
-        Person siarhei = cachePersonDabProxy.readPerson("Siarhei");
-        Person siarhei2 = cachePersonDabProxy.readPerson("Siarhei");
-    }
 }
