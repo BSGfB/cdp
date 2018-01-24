@@ -24,7 +24,9 @@ Client chooses to work with files or DB but once the choice was made – client 
 [How to install IDEA](https://projectlombok.org/setup/intellij) and [How to install gradle](https://projectlombok.org/setup/gradle)
 
 ### Run application
-
+First requests will pass through CachePersonDapProxy, then JdbcPersonDap.
+After that, requested persons stored in cache and database will not be called.
+`Pay attention to logs`
 ```
 ./gradlew architecture-patterns:proxy:runApp
 ```

@@ -15,6 +15,8 @@ with young professionals (mentees) aspiring to key positions on their projects.
 [Card](https://trello.com/c/yYh39I8a)
 4. [GC](gc/README.md) - Memory Management and Garbage Collection
 [Card](https://trello.com/c/Cig0W7BM)
+5. [GC](architecture-patterns/README.md) - Architecture patterns
+[Card](https://trello.com/c/U5auW3sf)
 
 ## Built With
 * [Gradle](https://gradle.org/) - Dependency Management
